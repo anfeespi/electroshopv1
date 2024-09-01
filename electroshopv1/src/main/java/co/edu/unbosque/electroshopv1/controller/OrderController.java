@@ -17,32 +17,39 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "*")
 @Transactional
 public class OrderController {
-	
+
 	public OrderController() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@PostMapping("/validateCard")
 	public ResponseEntity<String> validateCard(@Valid @RequestBody CardDTO card) {
 		/**
 		 * Validar el numero
-		 */		
-		if(!card.getNumber().replace("-", "").replace(".", "").replace(" ", "").replace("/", "").replace("\\", "").matches("\\d+"))
+		 */
+		if (!card.getNumber().replace("-", "").replace(".", "").replace(" ", "").replace("/", "").replace("\\", "")
+				.matches("\\d+"))
 			throw new CardNotValidException("Hay caracteres en la tarjeta");
-		
-		if(card.getNumber().replace("-", "").replace(".", "").replace(" ", "").replace("/", "").replace("\\", "").length() != 16)
+
+		if (card.getNumber().replace("-", "").replace(".", "").replace(" ", "").replace("/", "").replace("\\", "")
+				.length() != 16)
 			throw new CardNotValidException("Número de tarjeta no válido");
-		
+
 		/**
 		 * Validar la fecha de expiracion
 		 */
-		if (!card.getExpiration().replace("-", "").replace(".", "").replace(" ", "").replace("/", "").replace("\\", "").matches("\\d+"))
-			throw new CardNotValidException("Hay caracteres en la expiración");;
+		if (!card.getExpiration().replace("-", "").replace(".", "").replace(" ", "").replace("/", "").replace("\\", "")
+				.matches("\\d+"))
+			throw new CardNotValidException("Hay caracteres en la expiración");
+		;
 
+		/**
+		 * Validar el cvc
+		 */
 		if (!card.getCvc().matches("[0-9]+"))
-			throw new CardNotValidException("Hay caracteres en el cvc");;
-		
-		
+			throw new CardNotValidException("Hay caracteres en el cvc");
+		;
+
 		return ResponseEntity.ok("La tarjeta es válida");
 	}
 }
