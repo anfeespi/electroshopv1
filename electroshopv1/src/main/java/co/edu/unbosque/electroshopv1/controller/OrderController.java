@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unbosque.electroshopv1.exception.CardNotValidException;
 import co.edu.unbosque.electroshopv1.model.CardDTO;
 import co.edu.unbosque.electroshopv1.model.OrderDTO;
+import co.edu.unbosque.electroshopv1.model.OrderDetailDTO;
 import co.edu.unbosque.electroshopv1.model.RequestOrderDTO;
+import co.edu.unbosque.electroshopv1.service.OrderDetailService;
 import co.edu.unbosque.electroshopv1.service.OrderService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -24,6 +26,9 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	
+	@Autowired
+	private OrderDetailService orderDetailService;
+	
 	public OrderController() {
 		// TODO Auto-generated constructor stub
 	}
@@ -33,6 +38,10 @@ public class OrderController {
 		makeOrder(requestOrderDTO.getOrderDTO());
 		validateCard(requestOrderDTO.getCardDTO());
 		
+		for(OrderDetailDTO od : requestOrderDTO.getOrderDetails()) {
+			orderDetailService.createOrderDetail(od);
+		}
+		//Cambiar por detalles de fina coqueteria
 		return ResponseEntity.ok("válido");
 	}
 	
