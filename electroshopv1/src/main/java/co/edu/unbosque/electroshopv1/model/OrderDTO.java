@@ -5,17 +5,17 @@ import org.hibernate.validator.constraints.Range;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class OrderDTO {
-	@NotBlank(message = "El pedido no tiene identificador")
+	@NotNull(message = "El pedido no tiene identificador")
 	private Integer orderId;
 	
-	@JsonBackReference
 	@NotBlank(message = "El cliente no está asociado")
-	private ClientDTO client;
+	private String client;
 	
 	@JsonBackReference
-	@NotBlank(message = "Se debe asociar un método de pago")
+	@NotNull(message = "Se debe asociar un método de pago")
 	private PaymentMethod paymentMethod;
 	
 	@Range(min = 0, message = "El valor de la compra no debe ser 0")
@@ -32,7 +32,7 @@ public class OrderDTO {
 	 * @param totalValue
 	 */
 	public OrderDTO(@NotBlank(message = "El pedido no tiene identificador") Integer orderId,
-			@NotBlank(message = "El cliente no está asociado") ClientDTO client,
+			@NotBlank(message = "El cliente no está asociado") String client,
 			@NotBlank(message = "Se debe asociar un método de pago") PaymentMethod paymentMethod,
 			@Range(min = 0, message = "El valor de la compra no debe ser 0") Long totalValue) {
 		super();
@@ -59,14 +59,14 @@ public class OrderDTO {
 	/**
 	 * @return the client
 	 */
-	public ClientDTO getClientDTO() {
+	public String getClientDTO() {
 		return client;
 	}
 
 	/**
 	 * @param client the client to set
 	 */
-	public void setClientDTO(ClientDTO client) {
+	public void setClientDTO(String client) {
 		this.client = client;
 	}
 

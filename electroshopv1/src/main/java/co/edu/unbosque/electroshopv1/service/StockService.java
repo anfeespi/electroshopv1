@@ -3,6 +3,7 @@ package co.edu.unbosque.electroshopv1.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +16,14 @@ import co.edu.unbosque.electroshopv1.repository.StockRepository;
 
 @Service
 public class StockService {
-
+	@Autowired
 	private StockRepository stockRepository;
 
 	public StockService() {
 	}
 	
 	public boolean createStock(StockDTO stockDTO) {
-		stockRepository.save(Transformation.transformStockDTOToStock(stockDTO));
+		stockRepository.save(DataMapper.transformStockDTOToStock(stockDTO));
 		return true;
 	}
 
@@ -30,7 +31,7 @@ public class StockService {
 		List<Stock> stockList = (List<Stock>)stockRepository.findAll();
 		List<StockDTO> stockDTOList = new ArrayList<StockDTO>(); 
 		for (int i = 0; i < stockList.size(); i++) {
-			stockDTOList.add(Transformation.transformStockToStockDTO(stockList.get(i)));
+			stockDTOList.add(DataMapper.transformStockToStockDTO(stockList.get(i)));
 		}
 		return stockDTOList;
 	}
@@ -40,7 +41,7 @@ public class StockService {
 	}
 
 	public StockDTO getStockById(Integer id) {
-		return Transformation.transformStockToStockDTO(stockRepository.findById(id).get());
+		return DataMapper.transformStockToStockDTO(stockRepository.findById(id).get());
 	}
 	
 	
@@ -58,7 +59,7 @@ public class StockService {
 		}else {
 			List<Stock> stockList = new ArrayList<Stock>(); 
 			for (int i = 0; i < stockDTOList.size(); i++) {
-				stockList.add(Transformation.transformStockDTOToStock(stockDTOList.get(i)));
+				stockList.add(DataMapper.transformStockDTOToStock(stockDTOList.get(i)));
 			}
 			return ResponseEntity.ok(stockList);
 		}

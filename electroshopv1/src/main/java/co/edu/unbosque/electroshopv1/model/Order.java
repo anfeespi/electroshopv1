@@ -1,5 +1,7 @@
 package co.edu.unbosque.electroshopv1.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,6 +24,7 @@ public class Order {
 	@JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente")
 	private Client client;
 
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_met_pago")
 	private PaymentMethod paymentMethod;

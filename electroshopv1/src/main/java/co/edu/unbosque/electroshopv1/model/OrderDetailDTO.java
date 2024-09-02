@@ -6,10 +6,10 @@ import jakarta.validation.constraints.NotNull;
 
 public class OrderDetailDTO {
 	@NotNull(message = "El pedido no está especificado")
-	private OrderDTO order;
+	private Integer order;
 	
 	@NotNull(message = "El producto no está especificado")
-	private ProductDTO product;
+	private Integer product;
 	
 	@Range(min = 1, message = "La cantidad no es la minima")
 	private Integer quantity;
@@ -23,8 +23,8 @@ public class OrderDetailDTO {
 	 * @param product
 	 * @param quantity
 	 */
-	public OrderDetailDTO(@NotNull(message = "El pedido no está especificado") OrderDTO order,
-			@NotNull(message = "El producto no está especificado") ProductDTO product,
+	public OrderDetailDTO(@NotNull(message = "El pedido no está especificado") Integer order,
+			@NotNull(message = "El producto no está especificado") Integer product,
 			@Range(min = 1, message = "La cantidad no es la minima") Integer quantity) {
 		super();
 		this.order = order;
@@ -35,28 +35,28 @@ public class OrderDetailDTO {
 	/**
 	 * @return the order
 	 */
-	public OrderDTO getOrder() {
+	public Integer getOrder() {
 		return order;
 	}
 
 	/**
 	 * @param order the order to set
 	 */
-	public void setOrder(OrderDTO order) {
+	public void setOrder(Integer order) {
 		this.order = order;
 	}
 
 	/**
 	 * @return the product
 	 */
-	public ProductDTO getProduct() {
+	public Integer getProduct() {
 		return product;
 	}
 
 	/**
 	 * @param product the product to set
 	 */
-	public void setProduct(ProductDTO product) {
+	public void setProduct(Integer product) {
 		this.product = product;
 	}
 

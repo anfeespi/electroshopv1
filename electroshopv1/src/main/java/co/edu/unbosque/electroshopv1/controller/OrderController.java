@@ -1,5 +1,6 @@
 package co.edu.unbosque.electroshopv1.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.electroshopv1.exception.CardNotValidException;
 import co.edu.unbosque.electroshopv1.model.CardDTO;
+import co.edu.unbosque.electroshopv1.model.OrderDTO;
+import co.edu.unbosque.electroshopv1.model.RequestOrderDTO;
+import co.edu.unbosque.electroshopv1.service.OrderService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -17,9 +21,24 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "*")
 @Transactional
 public class OrderController {
-
+	@Autowired
+	private OrderService orderService;
+	
 	public OrderController() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	@PostMapping("/procesar")
+	public ResponseEntity<?> processAnOrder(@Valid @RequestBody RequestOrderDTO requestOrderDTO){
+		makeOrder(requestOrderDTO.getOrderDTO());
+		validateCard(requestOrderDTO.getCardDTO());
+		
+		return ResponseEntity.ok("válido");
+	}
+	
+	@PostMapping("/makeOrder")
+	public ResponseEntity<?> makeOrder(@Valid @RequestBody OrderDTO orderDTO){
+		return ResponseEntity.ok(orderService.createOrder(orderDTO));
 	}
 
 	@PostMapping("/validateCard")

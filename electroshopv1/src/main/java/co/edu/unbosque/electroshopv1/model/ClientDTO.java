@@ -5,8 +5,6 @@ import java.util.Set;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.validation.constraints.NotBlank;
 
 public class ClientDTO {
@@ -25,8 +23,7 @@ public class ClientDTO {
 	@NotBlank(message = "La direecion no debe ser vacia")
 	private String address;
 	
-	@JsonManagedReference
-	private Set<OrderDTO> orders;
+	private Set<Integer> orders;
 	
 	public ClientDTO() {
 		// TODO Auto-generated constructor stub
@@ -43,7 +40,7 @@ public class ClientDTO {
 			@Length(min = 7, max = 10, message = "Formato incorrecto de la cédula") @NotBlank(message = "La cédula no puede estar en blanco") String clientId,
 			@Length(max = 50, message = "El nombre es demasiado largo") @NotBlank(message = "Ups! ese nombre es del hombre invisible") String name,
 			@Range(min = 18, max = 150, message = "La edad no es adecuada para hacer compras") @NotBlank(message = "La edad no puede ser vacía") Integer age,
-			@NotBlank(message = "La direecion no debe ser vacia") String address, Set<OrderDTO> orders) {
+			@NotBlank(message = "La direecion no debe ser vacia") String address, Set<Integer> orders) {
 		super();
 		this.clientId = clientId;
 		this.name = name;
@@ -111,14 +108,14 @@ public class ClientDTO {
 	/**
 	 * @return the orders
 	 */
-	public Set<OrderDTO> getOrders() {
+	public Set<Integer> getOrders() {
 		return orders;
 	}
 
 	/**
 	 * @param orders the orders to set
 	 */
-	public void setOrders(Set<OrderDTO> orders) {
+	public void setOrders(Set<Integer> orders) {
 		this.orders = orders;
 	}
 	

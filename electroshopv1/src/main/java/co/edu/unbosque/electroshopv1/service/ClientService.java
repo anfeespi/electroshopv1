@@ -3,6 +3,7 @@ package co.edu.unbosque.electroshopv1.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import co.edu.unbosque.electroshopv1.repository.ClientRepository;
 
 @Service
 public class ClientService {
-
+	@Autowired
 	private ClientRepository clientRepository;
 	
 
@@ -24,7 +25,7 @@ public class ClientService {
 	}
 	
 	public boolean createClient(ClientDTO clientDTO) {
-		clientRepository.save(Transformation.transformClientDTOToClient(clientDTO));
+		clientRepository.save(DataMapper.transformClientDTOToClient(clientDTO));
 		return true;
 	}
 	
@@ -32,7 +33,7 @@ public class ClientService {
 		List<Client> clientList = (List<Client>)clientRepository.findAll();
 		List<ClientDTO> clientDTOList = new ArrayList<ClientDTO>(); 
 		for (int i = 0; i < clientList.size(); i++) {
-			clientDTOList.add(Transformation.transformClientToClientDTO(clientList.get(i)));
+			clientDTOList.add(DataMapper.transformClientToClientDTO(clientList.get(i)));
 		}
 		return clientDTOList;
 	}
@@ -43,13 +44,9 @@ public class ClientService {
 	}
 
 	public ClientDTO getClientById(String id) {
-		return Transformation.transformClientToClientDTO(clientRepository.findById(id).get());
+		return DataMapper.transformClientToClientDTO(clientRepository.findById(id).get());
 	}
-	
-	
-	
-	
-	
+
 	public ResponseEntity<String> validateCreateClient(ClientDTO clientDTO) {
 		if(createClient(clientDTO)){
 			throw new NotCreateException("Cliente creado con éxito");
@@ -64,7 +61,7 @@ public class ClientService {
 		}else {
 			List<Client> clientList = new ArrayList<Client>(); 
 			for (int i = 0; i < clientDTOList.size(); i++) {
-				clientList.add(Transformation.transformClientDTOToClient(clientDTOList.get(i)));
+				clientList.add(DataMapper.transformClientDTOToClient(clientDTOList.get(i)));
 			}
 			return ResponseEntity.ok(clientList);
 		}

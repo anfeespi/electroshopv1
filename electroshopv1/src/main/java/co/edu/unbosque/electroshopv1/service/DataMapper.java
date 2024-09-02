@@ -6,13 +6,13 @@ import co.edu.unbosque.electroshopv1.model.Order;
 import co.edu.unbosque.electroshopv1.model.OrderDTO;
 import co.edu.unbosque.electroshopv1.model.OrderDetail;
 import co.edu.unbosque.electroshopv1.model.OrderDetailDTO;
+import co.edu.unbosque.electroshopv1.model.PaymentMethod;
 import co.edu.unbosque.electroshopv1.model.Product;
 import co.edu.unbosque.electroshopv1.model.ProductDTO;
 import co.edu.unbosque.electroshopv1.model.Stock;
 import co.edu.unbosque.electroshopv1.model.StockDTO;
 
-public class Transformation {
-	
+public class DataMapper {	
 	public static ClientDTO transformClientToClientDTO(Client client) {
 		ClientDTO clientDTO = new ClientDTO();
 		clientDTO.setClientId(client.getClientId());
@@ -34,17 +34,17 @@ public class Transformation {
 	public static OrderDTO transformOrderToOrderDTO(Order order) {
 		OrderDTO orderDTO = new OrderDTO();
 		orderDTO.setOrderId(order.getOrderId());
-		orderDTO.setClientDTO(transformClientToClientDTO(order.getClient()));
+		orderDTO.setClientDTO(order.getClient().getClientId());
 		orderDTO.setPaymentMethod(order.getPaymentMethod());
 		orderDTO.setTotalValue(order.getTotalValue());
 		return orderDTO;
 	}
 	
-	public static Order transformOrderDTOToOrder(OrderDTO orderDTO) {
+	public static Order transformOrderDTOToOrder(OrderDTO orderDTO, Client client, PaymentMethod paymentMethod) {
 		Order order = new Order();
 		order.setOrderId(orderDTO.getOrderId());
-		order.setClient(transformClientDTOToClient(orderDTO.getClientDTO()));
-		order.setPaymentMethod(orderDTO.getPaymentMethod());
+		order.setClient(client);
+		order.setPaymentMethod(paymentMethod);
 		order.setTotalValue(orderDTO.getTotalValue());
 		return order;
 	}
@@ -85,16 +85,16 @@ public class Transformation {
 	
 	public static OrderDetailDTO transformOrderDetailToOrderTailDTO(OrderDetail orderDetail) {
 		OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
-		orderDetailDTO.setOrder(transformOrderToOrderDTO(orderDetail.getOrderDetailId().getOrder()));
-		orderDetailDTO.setProduct(transformProductToProductDTO(orderDetail.getOrderDetailId().getProduct()));
+		orderDetailDTO.setOrder(orderDetail.getOrderDetailId().getOrder().getOrderId());
+		orderDetailDTO.setProduct(orderDetail.getOrderDetailId().getProduct().getProductId());
 		orderDetailDTO.setQuantity(orderDetail.getQuantity());
 		return orderDetailDTO;
 	}
 	
-	public static OrderDetail transformOrderDetailDTOToOrderDetail(OrderDetailDTO orderDetailDTO) {
+	public static OrderDetail transformOrderDetailDTOToOrderDetail(OrderDetailDTO orderDetailDTO, Order order, Product product) {
 		OrderDetail orderDetail = new OrderDetail();
-		orderDetail.getOrderDetailId().setOrder(transformOrderDTOToOrder(orderDetailDTO.getOrder()));
-		orderDetail.getOrderDetailId().setProduct(transformProductDTOToProduct(orderDetailDTO.getProduct()));
+		orderDetail.getOrderDetailId().setOrder(order);
+		orderDetail.getOrderDetailId().setProduct(product);
 		orderDetail.setQuantity(orderDetailDTO.getQuantity());
 		return orderDetail;
 	}

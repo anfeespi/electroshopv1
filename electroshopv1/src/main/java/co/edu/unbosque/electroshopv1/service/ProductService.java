@@ -3,6 +3,7 @@ package co.edu.unbosque.electroshopv1.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,7 @@ import co.edu.unbosque.electroshopv1.repository.ProductRepository;
 
 @Service
 public class ProductService {
-
-
+	@Autowired
 	private ProductRepository productRepository;
 
 	public ProductService() {
@@ -24,7 +24,7 @@ public class ProductService {
 	}
 
 	public boolean createProduct(ProductDTO productDTO) {
-		productRepository.save(Transformation.transformProductDTOToProduct(productDTO));
+		productRepository.save(DataMapper.transformProductDTOToProduct(productDTO));
 		return true;
 	}
 
@@ -32,7 +32,7 @@ public class ProductService {
 		List<Product> productList = (List<Product>)productRepository.findAll();
 		List<ProductDTO> productDTOList = new ArrayList<ProductDTO>(); 
 		for (int i = 0; i < productList.size(); i++) {
-			productDTOList.add(Transformation.transformProductToProductDTO(productList.get(i)));
+			productDTOList.add(DataMapper.transformProductToProductDTO(productList.get(i)));
 		}
 		return productDTOList;
 	}
@@ -42,7 +42,7 @@ public class ProductService {
 	}
 
 	public ProductDTO getProductById(Integer id) {		
-		return Transformation.transformProductToProductDTO(productRepository.findById(id).get());
+		return DataMapper.transformProductToProductDTO(productRepository.findById(id).get());
 	}
 	
 	
@@ -60,7 +60,7 @@ public class ProductService {
 		}else {
 			List<Product> productList = new ArrayList<Product>(); 
 			for (int i = 0; i < productDTOList.size(); i++) {
-				productList.add(Transformation.transformProductDTOToProduct(productDTOList.get(i)));
+				productList.add(DataMapper.transformProductDTOToProduct(productDTOList.get(i)));
 			}
 			return ResponseEntity.ok(productList);
 		}
