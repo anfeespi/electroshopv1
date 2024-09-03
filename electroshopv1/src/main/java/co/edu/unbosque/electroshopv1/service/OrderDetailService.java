@@ -34,7 +34,8 @@ public class OrderDetailService {
 	}
 
 	public boolean createOrderDetail(OrderDetailDTO orderDetail) {
-		Order order = orderRepository.findById(orderDetail.getOrder()).get();
+		List<Order> orders = (List<Order>) orderRepository.findAll();
+		Order order = orders.get(orders.size()-1);
 		Product product = productRepository.findById(orderDetail.getProduct()).get();
 		
 		orderDetailRepository.save(DataMapper.transformOrderDetailDTOToOrderDetail(orderDetail, order, product));
