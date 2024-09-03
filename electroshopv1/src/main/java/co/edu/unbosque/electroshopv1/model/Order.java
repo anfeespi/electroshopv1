@@ -104,4 +104,10 @@ public class Order {
 		this.totalValue = totalValue;
 	}
 
+	@Override
+	public String toString() {
+		return "Order [orderId=" + orderId + ", client=" + client + ", paymentMethod=" + paymentMethod + ", totalValue="
+				+ totalValue + "]";
+	}
+
 }

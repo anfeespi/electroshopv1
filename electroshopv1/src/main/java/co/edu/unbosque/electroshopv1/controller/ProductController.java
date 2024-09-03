@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.electroshopv1.model.ProductDTO;
@@ -48,5 +49,10 @@ public class ProductController {
 	public ResponseEntity<String> createProduct( @Valid @RequestBody ProductDTO productDTO){
 		productService.createProduct(productDTO);
 		return ResponseEntity.status(HttpStatus.CREATED).body("Creao");
+	}
+	
+	@GetMapping("/getById")
+	public ResponseEntity<ProductDTO> getById(@RequestParam Integer id){
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(productService.getProductById(id));
 	}
 }

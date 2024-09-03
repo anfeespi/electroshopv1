@@ -2,6 +2,7 @@ package co.edu.unbosque.electroshopv1.service;
 
 import co.edu.unbosque.electroshopv1.model.Client;
 import co.edu.unbosque.electroshopv1.model.ClientDTO;
+import co.edu.unbosque.electroshopv1.model.EmbeddedIdOrderDetail;
 import co.edu.unbosque.electroshopv1.model.Order;
 import co.edu.unbosque.electroshopv1.model.OrderDTO;
 import co.edu.unbosque.electroshopv1.model.OrderDetail;
@@ -93,6 +94,7 @@ public class DataMapper {
 	
 	public static OrderDetail transformOrderDetailDTOToOrderDetail(OrderDetailDTO orderDetailDTO, Order order, Product product) {
 		OrderDetail orderDetail = new OrderDetail();
+		orderDetail.setOrderDetailId(new EmbeddedIdOrderDetail());
 		orderDetail.getOrderDetailId().setOrder(order);
 		orderDetail.getOrderDetailId().setProduct(product);
 		orderDetail.setQuantity(orderDetailDTO.getQuantity());

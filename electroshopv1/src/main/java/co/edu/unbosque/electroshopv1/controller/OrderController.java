@@ -1,5 +1,7 @@
 package co.edu.unbosque.electroshopv1.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,10 +39,7 @@ public class OrderController {
 	public ResponseEntity<?> processAnOrder(@Valid @RequestBody RequestOrderDTO requestOrderDTO){
 		makeOrder(requestOrderDTO.getOrderDTO());
 		validateCard(requestOrderDTO.getCardDTO());
-		
-		for(OrderDetailDTO od : requestOrderDTO.getOrderDetails()) {
-			orderDetailService.createOrderDetail(od);
-		}
+		addDetails(requestOrderDTO.getOrderDetails());
 		//Cambiar por detalles de fina coqueteria
 		return ResponseEntity.ok("válido");
 	}
@@ -48,6 +47,13 @@ public class OrderController {
 	@PostMapping("/makeOrder")
 	public ResponseEntity<?> makeOrder(@Valid @RequestBody OrderDTO orderDTO){
 		return ResponseEntity.ok(orderService.createOrder(orderDTO));
+	}
+	
+	public ResponseEntity<?> addDetails(List<OrderDetailDTO> orderDetails){
+		for(OrderDetailDTO od : orderDetails) {
+			orderDetailService.createOrderDetail(od);
+		}
+		return ResponseEntity.ok("Detalles agregados");
 	}
 
 	@PostMapping("/validateCard")
