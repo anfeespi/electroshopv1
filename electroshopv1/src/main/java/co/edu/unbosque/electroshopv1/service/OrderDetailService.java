@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import co.edu.unbosque.electroshopv1.exception.NoEnoughStockException;
 import co.edu.unbosque.electroshopv1.exception.NotCreateException;
 import co.edu.unbosque.electroshopv1.exception.NotFoundException;
 import co.edu.unbosque.electroshopv1.model.EmbeddedIdOrderDetail;
@@ -17,6 +18,7 @@ import co.edu.unbosque.electroshopv1.model.Product;
 import co.edu.unbosque.electroshopv1.repository.OrderDetailRepository;
 import co.edu.unbosque.electroshopv1.repository.OrderRepository;
 import co.edu.unbosque.electroshopv1.repository.ProductRepository;
+import co.edu.unbosque.electroshopv1.repository.StockRepository;
 
 @Service
 public class OrderDetailService {
@@ -29,6 +31,9 @@ public class OrderDetailService {
 	@Autowired
 	private ProductRepository productRepository;
 	
+	@Autowired
+	private StockRepository stockRepository;
+	
 	public OrderDetailService() {
 
 	}
@@ -37,6 +42,9 @@ public class OrderDetailService {
 		List<Order> orders = (List<Order>) orderRepository.findAll();
 		Order order = orders.get(orders.size()-1);
 		Product product = productRepository.findById(orderDetail.getProduct()).get();
+		
+		if(stockRepository.findById(orderDetail.getProduct()).get().getStock() < orderDetail.getQuantity())
+			throw new NoEnoughStockException("No hay suficientes " + stockRepository.findById(orderDetail.getProduct()).get().getProduct().getName());
 		
 		orderDetailRepository.save(DataMapper.transformOrderDetailDTOToOrderDetail(orderDetail, order, product));
 		return true;
@@ -84,6 +92,13 @@ public class OrderDetailService {
 			throw new NotFoundException("El detalle de la orden proporcionada no está registrada");
 		}
 		return ResponseEntity.ok("El detalle de la orden proporcionada está registrada");
+	}
+	
+	public String addDetails(List<OrderDetailDTO> orderDetails){
+		for(OrderDetailDTO od : orderDetails) {
+			createOrderDetail(od);
+		}
+		return orderDetails.size() + " detalles agregados con éxito";
 	}
 	
 }
