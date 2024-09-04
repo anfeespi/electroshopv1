@@ -46,7 +46,7 @@ public class CardService {
 		response.append("Creando compra a las: " + dateFormat.format(date) + "\n");
 
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(30);
 		} catch (InterruptedException e) {
 			date = new Date();
 			response.append("Compra rechazada: " + dateFormat.format(date) + "\n");
