@@ -48,10 +48,12 @@ public class CardService {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
+			date = new Date();
 			response.append("Compra rechazada: " + dateFormat.format(date) + "\n");
 			e.printStackTrace();
 		}
 
+		date = new Date();
 		response.append("Compra aprobada: " + dateFormat.format(date) + "\n");
 
 		return response.toString();

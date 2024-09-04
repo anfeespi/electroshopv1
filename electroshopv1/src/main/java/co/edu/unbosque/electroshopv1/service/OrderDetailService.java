@@ -46,6 +46,8 @@ public class OrderDetailService {
 		if(stockRepository.findById(orderDetail.getProduct()).get().getStock() < orderDetail.getQuantity())
 			throw new NoEnoughStockException("No hay suficientes " + stockRepository.findById(orderDetail.getProduct()).get().getProduct().getName());
 		
+		stockRepository.findById(orderDetail.getProduct()).get().setStock(stockRepository.findById(orderDetail.getProduct()).get().getStock() - orderDetail.getQuantity());
+		
 		orderDetailRepository.save(DataMapper.transformOrderDetailDTOToOrderDetail(orderDetail, order, product));
 		return true;
 	}
